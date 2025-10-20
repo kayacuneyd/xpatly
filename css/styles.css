@@ -1,0 +1,147 @@
+:root{
+  --bg:#f7f9fc;
+  --primary:#154360;
+  --accent:#f39c12;
+  --muted:#6b7280;
+  --success:#28a745;
+  --card:#ffffff;
+  --radius:8px;
+  --max-width:1100px;
+  --gap:1rem;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, Arial, sans-serif;
+  color:#111;
+  background:var(--bg);
+  line-height:1.4;
+  -webkit-font-smoothing:antialiased;
+}
+
+.header-inner{
+  max-width:var(--max-width);
+  margin:0 auto;
+  padding:2rem 1rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:.75rem;
+  background:linear-gradient(90deg, rgba(21,67,96,0.95), rgba(21,67,96,0.9));
+  color: #fff;
+  border-bottom-left-radius:var(--radius);
+  border-bottom-right-radius:var(--radius);
+}
+
+.controls{display:flex;gap:1rem;align-items:center}
+.language select{padding:.4rem;border-radius:6px;border:1px solid rgba(0,0,0,0.1)}
+
+.cta-buttons a{
+  margin:0 .25rem;
+  padding:.6rem 1rem;
+  background:var(--accent);
+  color:#fff;
+  border-radius:6px;
+  text-decoration:none;
+  transition:transform .12s, box-shadow .12s;
+  display:inline-block;
+}
+.cta-buttons a:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+
+.features{
+  max-width:var(--max-width);
+  margin:1.25rem auto;
+  padding:1rem;
+  display:flex;
+  gap:var(--gap);
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.feature{
+  flex:1 1 260px;
+  background:var(--card);
+  padding:1rem;
+  border-radius:var(--radius);
+  box-shadow:0 6px 18px rgba(15,23,42,0.06);
+  text-align:center;
+}
+
+.lead-form{
+  display:flex;
+  justify-content:center;
+  padding:1.5rem 1rem 3rem;
+}
+
+form{
+  width:100%;
+  max-width:420px;
+  background:var(--card);
+  padding:1.25rem;
+  border-radius:var(--radius);
+  box-shadow:0 6px 18px rgba(15,23,42,0.06);
+}
+label{display:block;margin-bottom:.25rem;font-weight:600;color:var(--muted)}
+input,select,button{font:inherit}
+input,select{
+  width:100%;
+  padding:.6rem;
+  margin-bottom:.8rem;
+  border-radius:8px;
+  border:1px solid #e6e9ef;
+}
+button#submitLead{
+  width:100%;
+  padding:.75rem;
+  background:var(--primary);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition:opacity .12s, transform .08s;
+}
+button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
+
+.form-message{margin-top:.5rem;color:var(--muted);min-height:1.2em}
+
+.chat-button{
+  position:fixed;right:20px;bottom:20px;background:var(--success);color:#fff;border:none;border-radius:999px;width:56px;height:56px;
+  display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 18px rgba(15,23,42,0.2)
+}
+.chat-window{
+  position:fixed;right:20px;bottom:90px;width:320px;max-height:60vh;background:var(--card);border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.15);
+  display:none;flex-direction:column;overflow:hidden;
+}
+.chat-header{background:var(--primary);color:#fff;padding:.6rem;font-weight:700}
+.chat-messages{padding:.6rem;flex:1;overflow:auto;font-size:.95rem}
+.chat-input{display:flex;border-top:1px solid #e6e9ef}
+.chat-input input{flex:1;padding:.6rem;border:none}
+.chat-input button{padding:.6rem;background:var(--primary);color:#fff;border:none;cursor:pointer}
+
+@media (max-width:640px){
+  .chat-window{right:12px;left:12px;width:auto;bottom:80px;max-height:50vh}
+  .header-inner{padding:1rem}
+}
+
+.site-footer{
+  margin-top:2.5rem;
+  padding:1rem 0;
+  text-align:center;
+  color:var(--muted);
+  background: linear-gradient(180deg, rgba(21,67,96,0.03), transparent);
+  border-top: 1px solid rgba(15,23,42,0.04);
+}
+.site-footer .container{max-width:var(--max-width);margin:0 auto;padding:0 1rem}
+.site-footer .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.site-footer p{margin:0;font-size:.95rem}
+.site-footer a{color:var(--primary);text-decoration:none;font-weight:600}
+.site-footer a:hover{text-decoration:underline}
+
+.footer-lang select{padding:.4rem;border-radius:6px;border:1px solid rgba(0,0,0,0.08);background:transparent}
+
+/* Ensure footer doesn't overlap chat button on small screens */
+@media (max-width:640px){
+  .site-footer{padding-bottom:80px}
+  .site-footer .footer-inner{flex-direction:column;align-items:flex-start;gap:.5rem}
+}

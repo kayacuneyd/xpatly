@@ -1,0 +1,8 @@
+nohup: ignoring input
+
+> xpatly-landing@0.1.0 start
+> node server.js
+
+OPENAI_API_KEY not set. Chat responses will be simulated.
+Server running on http://localhost:3001
+Lead received { name: 'Test', email: 't@example.com', role: 'seeker' }

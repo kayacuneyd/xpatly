@@ -1,0 +1,37 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies (optional)
+        run: |
+          if [ -f package.json ]; then npm ci --silent || true; fi
+
+      - name: Build (none)
+        run: echo "No build step - copying files"
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: .
+
+      - name: Publish
+        uses: actions/deploy-pages@v1
