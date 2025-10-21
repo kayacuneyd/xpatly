@@ -83,14 +83,40 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const chatInput = document.getElementById('chatInput');
   const chatMessages = document.getElementById('chatMessages');
 
+  // Gelen yanıtlarda "Assistant:/Asistan:" gibi önekleri temizlemek için regex
+  const STRIP_ASSISTANT_PREFIX_RE = /^\s*(assistant|asistan|assistent|asistente|ассистент)\s*:\s*/i;
+
+  // Metni normalize eder: HTML etiketlerini temizler, önekleri kaldırır
+  function normalizeAssistantText(raw){
+    let s = String(raw ?? '');
+    // HTML etiketlerini güvenli şekilde plain text'e dönüştür
+    try{
+      const tmp = document.createElement('div');
+      tmp.innerHTML = s;
+      s = tmp.textContent || tmp.innerText || '';
+    }catch(_){ /* ignore */ }
+    // Başlangıçtaki rol öneklerini kaldır
+    s = s.replace(STRIP_ASSISTANT_PREFIX_RE, '');
+    // Fazla boşlukları toparla
+    return s.replace(/^\s+|\s+$/g, '');
+  }
+
   function addMessage(role, text){
     if(!chatMessages) return;
     const p = document.createElement('p');
     p.className = role; // 'user' | 'assistant'
-    p.innerHTML = role === 'assistant' ? `<strong>Asistan:</strong> ${text}` : text;
+    const raw = String(text ?? '');
+    const cleaned = role === 'assistant' ? normalizeAssistantText(raw) : raw;
+    // Güvenlik için textContent kullan
+    p.textContent = cleaned;
     chatMessages.appendChild(p);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
+
+  // Başlangıç mesajında varsa öneki temizle
+  document.querySelectorAll('#chatMessages .assistant').forEach(el => {
+    el.textContent = normalizeAssistantText(el.innerHTML || el.textContent || '');
+  });
 
   async function sendChat(text){
     addMessage('user', text);
@@ -130,36 +156,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-});
-
-async function sendChat(text){
-  addMessage('Siz', text, 'user');
-  try{
-    const res = await fetch('/api/chat', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({message:text, lang: langSelect.value})
-    });
-    if(!res.ok) throw new Error('chat error');
-    const j = await res.json();
-    addMessage('Asistan', j.reply, 'assistant');
-    if(j.lead) {
-      const leads = JSON.parse(localStorage.getItem('leads')||'[]');
-      leads.push(j.lead);
-      localStorage.setItem('leads', JSON.stringify(leads));
-    }
-  }catch(err){
-    console.error(err);
-    addMessage('Asistan', t('chat.welcome', langSelect.value), 'assistant');
-  }
-}
-
-sendButton.addEventListener('click', ()=>{
-  const txt = chatInput.value.trim();
-  if(!txt) return;
-  sendChat(txt);
-  chatInput.value = '';
-});
-chatInput.addEventListener('keydown', (e)=>{
-  if(e.key === 'Enter'){ sendButton.click(); }
 });
