@@ -85,8 +85,13 @@
             <p class="credit">developed with love & by <a href="https://kayacuneyt.com" target="_blank" rel="noopener noreferrer">Cüneyt Kaya</a></p>
             <div class="footer-right">
                 <div class="footer-lang">
-                    <label for="langSelectFooter" class="sr-only">Dil</label>
-                    <select id="langSelectFooter" aria-label="language selector"></select>
+                    <!-- Görselde sadece bayraklar/gösterim olacak; ekran okuyucular için label korunuyor -->
+                    <select id="langSelectFooter" aria-label="Dil seçici" title="Dil">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="et">🇪🇪 Eesti</option>
+                        <option value="ru">🇷🇺 Русский</option>
+                        <option value="tr" selected>🇹🇷 Türkçe</option>
+                    </select>
                 </div>
             </div>
         </div>

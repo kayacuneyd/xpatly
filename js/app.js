@@ -10,12 +10,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const langNames = { en: 'English', ru: 'Русский', et: 'Eesti', tr: 'Türkçe' };
 
   if(langSelect){
-    supported.forEach(code=>{
-      const opt = document.createElement('option');
-      opt.value = code;
-      opt.textContent = code.toUpperCase();
-      langSelect.appendChild(opt);
-    });
+    // Wenn das Select bereits Optionen enthält (z.B. statisch im HTML mit Flaggen),
+    // nichts hinzufügen — so vermeiden wir doppelte Einträge.
+    if(!langSelect.options || langSelect.options.length === 0){
+      supported.forEach(code=>{
+        const opt = document.createElement('option');
+        opt.value = code;
+        // Verwende eine lesbare Bezeichnung, wenn vorhanden, sonst ISO-Code
+        opt.textContent = langNames[code] || code.toUpperCase();
+        langSelect.appendChild(opt);
+      });
+    }
   }
 
   function applyTranslations(lang){

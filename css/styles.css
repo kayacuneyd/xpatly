@@ -140,6 +140,36 @@ button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
 
 .footer-lang select{padding:.4rem;border-radius:6px;border:1px solid rgba(0,0,0,0.08);background:transparent}
 
+/* Minimal, flag-first appearance for footer language selector */
+.footer-lang{
+  position:relative;
+  display:inline-block;
+}
+.footer-lang select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  padding:6px 34px 6px 10px; /* space for custom caret */
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  background:transparent;
+  font-family: system-ui, "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+  font-size:0.95rem;
+  line-height:1;
+  cursor:pointer;
+}
+.footer-lang::after{
+  content:'▾';
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+  color:rgba(0,0,0,0.45);
+  font-size:0.9rem;
+}
+.footer-lang option{font-family: system-ui, "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji", sans-serif}
+
 /* Ensure footer doesn't overlap chat button on small screens */
 @media (max-width:640px){
   .site-footer{padding-bottom:80px}
