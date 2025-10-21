@@ -106,7 +106,6 @@ button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
 .form-message{margin-top:.5rem;color:var(--muted);min-height:1.2em}
 
 /* Embedded Chat Panel (replaces lead form) */
-.chat-section{width:100%;}
 .chat-panel{
   width:100%;
   max-width:860px;
@@ -121,9 +120,9 @@ button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
 }
 .chat-header{background:var(--primary);color:#fff;padding:.6rem 1rem;font-weight:700}
 .chat-messages{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.5rem}
-.chat-input{display:flex;gap:.5rem;padding:.6rem;border-top:1px solid #e6e9ef}
+.chat-input{display:flex;gap:.5rem;padding:.6rem;border-top:1px solid #e6e9ef;max-width:720px;margin:0 auto;align-items:center}
 .chat-input input{flex:1;padding:.6rem;border:1px solid #cbd5e1;border-radius:8px}
-.chat-input button{padding:.6rem 1rem;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer}
+.chat-input button{padding:.6rem 1rem;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;white-space:nowrap}
 .chat-messages .assistant,.chat-messages .user{max-width:80%;padding:.6rem .8rem;border-radius:10px;line-height:1.35}
 .chat-messages .assistant{background:#f1f5f9;align-self:flex-start}
 .chat-messages .user{background:#dbeafe;align-self:flex-end}
@@ -185,4 +184,11 @@ button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
 @media (max-width:640px){
   .site-footer{padding-bottom:80px}
   .site-footer .footer-inner{flex-direction:column;align-items:flex-start;gap:.5rem}
+}
+
+/* Mobile: butonu tam genişlik yap, satırı istifleyerek ortala */
+@media (max-width: 640px){
+  .chat-input{flex-direction:column;max-width:unset}
+  .chat-input button{width:100%}
+  .chat-input input{width:100%}
 }

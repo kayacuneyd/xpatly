@@ -39,18 +39,16 @@
     </section>
 
     <section class="lead-form" id="form">
-        <section class="chat-section" id="chat">
-            <div class="chat-panel" id="chatPanel" aria-label="Sohbet">
-                <div class="chat-header" id="chatHeader">Sohbet</div>
-                <div class="chat-messages" id="chatMessages" aria-live="polite">
-                    <p class="assistant" data-i18n="chat.welcome"><strong>Asistan:</strong> Merhaba! Ben size nasıl yardımcı olabilirim? (Örn. bütçeniz, lokasyon, ev tipi)</p>
-                </div>
-                <form class="chat-input" id="chatForm">
-                    <input type="text" id="chatInput" placeholder="" data-i18n-placeholder="chat.input.placeholder" autocomplete="off">
-                    <button id="chatSend" type="submit" data-i18n="chat.send">Gönder</button>
-                </form>
+        <div class="chat-panel" id="chatPanel" aria-label="Sohbet">
+            <div class="chat-header" id="chatHeader">Sohbet</div>
+            <div class="chat-messages" id="chatMessages" aria-live="polite">
+                <p class="assistant" data-i18n="chat.welcome"><strong>Asistan:</strong> Merhaba! Ben size nasıl yardımcı olabilirim? (Örn. bütçeniz, lokasyon, ev tipi)</p>
             </div>
-        </section>
+            <form class="chat-input" id="chatForm">
+                <input type="text" id="chatInput" placeholder="" data-i18n-placeholder="chat.input.placeholder" autocomplete="off">
+                <button id="chatSend" type="submit" data-i18n="chat.send">Gönder</button>
+            </form>
+        </div>
     </section>
 
     <script type="module" src="js/app.js"></script>
