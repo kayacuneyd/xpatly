@@ -28,10 +28,27 @@ jobs:
       - name: Build (none)
         run: echo "No build step - copying files"
 
-      - name: Deploy to GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+      - name: Archive site for Pages
+        id: archive
+        if: runner.os == 'Linux' || runner.os == 'macOS' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          set -e
+          ART=artifact.tar
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            tar -cvf "$RUNNER_TEMP\\$ART" --force-local . --exclude=.git --exclude=.github
+            echo "ART_PATH=$RUNNER_TEMP\\$ART" >> $GITHUB_OUTPUT
+          else
+            tar -cvf "$RUNNER_TEMP/$ART" --exclude=.git --exclude=.github .
+            echo "ART_PATH=$RUNNER_TEMP/$ART" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: .
+          name: github-pages
+          path: ${{ steps.archive.outputs.ART_PATH || format('{0}/artifact.tar', env.RUNNER_TEMP) }}
+          retention-days: 1
 
       - name: Publish
         uses: actions/deploy-pages@v1
