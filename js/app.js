@@ -78,74 +78,22 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
-  // --- Lead Form işlemleri ---
-  const leadForm = document.getElementById('leadForm');
-  const formMessage = document.getElementById('formMessage');
-
-  if(leadForm){
-    leadForm.addEventListener('submit', async (ev)=>{
-      ev.preventDefault();
-      const data = {
-        name: leadForm.name.value.trim(),
-        email: leadForm.email.value.trim(),
-        phone: leadForm.phone.value.trim(),
-        role: leadForm.role.value,
-        lang: langSelect ? langSelect.value : 'en',
-        createdAt: new Date().toISOString()
-      };
-      // validation
-      if(!data.name || !data.email || !data.role){
-        formMessage.textContent = t('form.error', langSelect ? langSelect.value : 'en');
-        formMessage.style.color = 'crimson';
-        return;
-      }
-      // localStorage
-      const leads = JSON.parse(localStorage.getItem('leads')||'[]');
-      leads.push(data);
-      localStorage.setItem('leads', JSON.stringify(leads));
-      formMessage.textContent = t('form.success', langSelect ? langSelect.value : 'en');
-      formMessage.style.color = 'green';
-
-      // send to mock backend
-      try{
-        await fetch('/api/leads', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(data)
-        });
-      }catch(e){
-        console.warn('Lead send failed', e);
-      }
-
-      leadForm.reset();
-    });
-  }
-
-  // --- Chat UI & Proxy ---
-  const chatButton = document.getElementById('chatButton');
-  const chatWindow = document.getElementById('chatWindow');
-  const chatMessages = document.getElementById('chatMessages');
+  // --- Embedded Chat Panel ---
+  const chatForm = document.getElementById('chatForm');
   const chatInput = document.getElementById('chatInput');
-  const sendButton = document.getElementById('sendButton');
+  const chatMessages = document.getElementById('chatMessages');
 
-  function addMessage(sender, text, className){
+  function addMessage(role, text){
+    if(!chatMessages) return;
     const p = document.createElement('p');
-    p.className = className||'';
-    p.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    p.className = role; // 'user' | 'assistant'
+    p.innerHTML = role === 'assistant' ? `<strong>Asistan:</strong> ${text}` : text;
     chatMessages.appendChild(p);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  if(chatButton){
-    chatButton.addEventListener('click', ()=>{
-      const visible = chatWindow.style.display === 'flex';
-      chatWindow.style.display = visible ? 'none' : 'flex';
-      chatWindow.setAttribute('aria-hidden', visible ? 'true' : 'false');
-    });
-  }
-
   async function sendChat(text){
-    addMessage('Siz', text, 'user');
+    addMessage('user', text);
     try{
       const res = await fetch('/api/chat', {
         method:'POST',
@@ -154,7 +102,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       });
       if(!res.ok) throw new Error('chat error');
       const j = await res.json();
-      addMessage('Asistan', j.reply, 'assistant');
+      addMessage('assistant', j.reply || t('chat.welcome', langSelect ? langSelect.value : 'en'));
       if(j.lead) {
         const leads = JSON.parse(localStorage.getItem('leads')||'[]');
         leads.push(j.lead);
@@ -162,86 +110,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
     }catch(err){
       console.error(err);
-      addMessage('Asistan', t('chat.welcome', langSelect ? langSelect.value : 'en'), 'assistant');
+      addMessage('assistant', t('chat.welcome', langSelect ? langSelect.value : 'en'));
     }
   }
 
-  if(sendButton){
-    sendButton.addEventListener('click', ()=>{
+  if(chatForm && chatInput){
+    chatForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
       const txt = chatInput.value.trim();
       if(!txt) return;
       sendChat(txt);
       chatInput.value = '';
     });
-  }
-  if(chatInput){
     chatInput.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){ sendButton.click(); }
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        chatForm.requestSubmit();
+      }
     });
   }
 
-});
-
-// --- Lead Form işlemleri ---
-const leadForm = document.getElementById('leadForm');
-const formMessage = document.getElementById('formMessage');
-
-leadForm.addEventListener('submit', async (ev)=>{
-  ev.preventDefault();
-  const data = {
-    name: leadForm.name.value.trim(),
-    email: leadForm.email.value.trim(),
-    phone: leadForm.phone.value.trim(),
-    role: leadForm.role.value,
-    lang: langSelect.value,
-    createdAt: new Date().toISOString()
-  };
-  // validation
-  if(!data.name || !data.email || !data.role){
-    formMessage.textContent = t('form.error', langSelect.value);
-    formMessage.style.color = 'crimson';
-    return;
-  }
-  // localStorage
-  const leads = JSON.parse(localStorage.getItem('leads')||'[]');
-  leads.push(data);
-  localStorage.setItem('leads', JSON.stringify(leads));
-  formMessage.textContent = t('form.success', langSelect.value);
-  formMessage.style.color = 'green';
-
-  // send to mock backend
-  try{
-    await fetch('/api/leads', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(data)
-    });
-  }catch(e){
-    console.warn('Lead send failed', e);
-  }
-
-  leadForm.reset();
-});
-
-// --- Chat UI & Proxy ---
-const chatButton = document.getElementById('chatButton');
-const chatWindow = document.getElementById('chatWindow');
-const chatMessages = document.getElementById('chatMessages');
-const chatInput = document.getElementById('chatInput');
-const sendButton = document.getElementById('sendButton');
-
-function addMessage(sender, text, className){
-  const p = document.createElement('p');
-  p.className = className||'';
-  p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-  chatMessages.appendChild(p);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-chatButton.addEventListener('click', ()=>{
-  const visible = chatWindow.style.display === 'flex';
-  chatWindow.style.display = visible ? 'none' : 'flex';
-  chatWindow.setAttribute('aria-hidden', visible ? 'true' : 'false');
 });
 
 async function sendChat(text){

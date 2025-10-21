@@ -105,19 +105,30 @@ button#submitLead:hover{opacity:.95;transform:translateY(-1px)}
 
 .form-message{margin-top:.5rem;color:var(--muted);min-height:1.2em}
 
-.chat-button{
-  position:fixed;right:20px;bottom:20px;background:var(--success);color:#fff;border:none;border-radius:999px;width:56px;height:56px;
-  display:flex;align-items:center;justify-content:center;font-size:1.3rem;cursor:pointer;box-shadow:0 6px 18px rgba(15,23,42,0.2)
+/* Embedded Chat Panel (replaces lead form) */
+.chat-section{width:100%;}
+.chat-panel{
+  width:100%;
+  max-width:860px;
+  height:420px;
+  background:var(--card);
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
-.chat-window{
-  position:fixed;right:20px;bottom:90px;width:320px;max-height:60vh;background:var(--card);border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,0.15);
-  display:none;flex-direction:column;overflow:hidden;
-}
-.chat-header{background:var(--primary);color:#fff;padding:.6rem;font-weight:700}
-.chat-messages{padding:.6rem;flex:1;overflow:auto;font-size:.95rem}
-.chat-input{display:flex;border-top:1px solid #e6e9ef}
-.chat-input input{flex:1;padding:.6rem;border:none}
-.chat-input button{padding:.6rem;background:var(--primary);color:#fff;border:none;cursor:pointer}
+.chat-header{background:var(--primary);color:#fff;padding:.6rem 1rem;font-weight:700}
+.chat-messages{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.5rem}
+.chat-input{display:flex;gap:.5rem;padding:.6rem;border-top:1px solid #e6e9ef}
+.chat-input input{flex:1;padding:.6rem;border:1px solid #cbd5e1;border-radius:8px}
+.chat-input button{padding:.6rem 1rem;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer}
+.chat-messages .assistant,.chat-messages .user{max-width:80%;padding:.6rem .8rem;border-radius:10px;line-height:1.35}
+.chat-messages .assistant{background:#f1f5f9;align-self:flex-start}
+.chat-messages .user{background:#dbeafe;align-self:flex-end}
+
+/* Remove floating chat styles (no longer used) */
 
 @media (max-width:640px){
   .chat-window{right:12px;left:12px;width:auto;bottom:80px;max-height:50vh}
